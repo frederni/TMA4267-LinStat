@@ -1,0 +1,97 @@
+---
+title: "Linstat Rec 1"
+author: "Frederick Nilsen"
+date: "21.01.2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1
+### a)
+
+```{r}
+A <- matrix(c(9,-2,-2,6),nrow=2,ncol=2)
+print(A)
+```
+
+### b)
+
+```{r}
+print(A-t(A))
+```
+
+We see that the difference between $A$ and its transposed is the ($2\times2$) zero matrix. Thus, $A$ is symmetric. This is also easily verifiable by hand, since $A^T$ would be
+$$
+\left[
+\begin{matrix}
+9 & -2 \\
+-2 & 6
+\end{matrix}
+\right],
+$$
+which is the same as $A$.
+
+### c)
+
+To find out if $A$ is positive definite, we check if $A$ is diagonal-dominant. From **a)**, we see that its diagonals, $9$ and $6$, are both positive and greater than the absolute value of non-diagonal entries, $|-2|$. Hence, $A$ is positive definite.
+
+### d)
+By hand, we solve the system
+$$
+\text{det}(A-\lambda I)=0\iff (9-\lambda)(6-\lambda)-4=0
+$$
+for $\lambda$, which simply factors to $(\lambda-10)(\lambda-5)$. In R, we use `eigen()`:
+
+```{r}
+tmp <- eigen(A)
+eVecs <- tmp$vectors
+eVals <- tmp$values
+print(eVecs)
+```
+```{r}
+print(eVals)
+```
+### e)
+We already have all we need to find the orthogonal diagonalization $A=V \Lambda V^{-1}$, we simply need to find the eigenvector matrix's inverse (using `solve()`) and $\Lambda$ using $\texttt{diag(}\lambda\texttt{)}$
+```{r}
+eVecsInv <- solve(eVecs)
+Lmbd <- diag(eVals)
+print(eVecs%*%Lmbd%*%eVecsInv)
+```
+
+### f)
+```{r}
+A_inv <- solve(A)
+```
+
+### g)
+```{r}
+print(eigen(A_inv))
+```
+
+The relationship between $\lambda(A)$ and $\lambda(A{-1})$ is clearly that $\lambda(A^{-1})=1/\lambda(A)$, i.e. $\frac15$ and $\frac{1}{10}$. As a consequence, the eigenvectors, which can freely be scaled, will be the same.
+
+### h)
+We've seen in the lectures that a covariance matrix must be symmetric and positive semi-definite. We've already shown that it's symmetric, and that it's positive defininte, thus it can represent some covariance matrix.
+
+### i)
+
+```{r}
+corrMatrix <- rbind(c(0,0), c(0,0))
+for (i in 1:nrow(A)){
+    for (j in 1:ncol(A)){
+        corrMatrix[i,j] = A[i,j]/sqrt(A[i,i]*A[j,j])
+    }
+}
+print(corrMatrix)
+```
+Check with built-in function:
+```{r}
+print(cov2cor(A))
+```
+### j)

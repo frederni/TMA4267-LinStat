@@ -1,0 +1,64 @@
+---
+title: "Compulsory assignment 1 [unfinished!]"
+author: "Frederick Nilsen"
+date: "23 1 2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1
+## a)
+We first determine $\pmb{\mu_Y}$. Since $E(A \mathbf{X})=A E\mathbf{X}$, we have
+$$
+\pmb{\mu_Y}:=E\mathbf{Y}=
+\left(
+\begin{matrix}
+1/\sqrt{2} & -1/\sqrt{2} \\
+1/\sqrt{2} & 1/\sqrt{2}
+\end{matrix}
+\right)
+\left(
+\begin{matrix}
+0 \\ 2
+\end{matrix}
+\right)=
+\left(
+\begin{matrix}
+-\sqrt{2} \\ \sqrt{2}
+\end{matrix}
+\right)
+$$
+To find the covariance matrix $\Sigma$, we use the property that $\text{Cov}(A\mathbf{X})=A \text{Cov}\mathbf{X}A^T$. We calculate this in R:
+
+```{r}
+pr1_A <- matrix(c(1/sqrt(2), -1/sqrt(2), 1/sqrt(2), 1/sqrt(2)), nrow=2, byrow=TRUE)
+pr1_Sigma_X <- rbind(c(3,1), c(1,3))
+pr1_Sigma_Y <- pr1_A %*% pr1_Sigma_X %*% t(pr1_A)
+pr1_Sigma_Y
+```
+We thus define our covariance matric $\Sigma_Y$ to be
+$$
+\Sigma_Y=
+\left(
+\begin{matrix}
+2 & 0 \\ 0 & 4
+\end{matrix}
+\right).
+$$
+The random variable $\mathbf{Y}$ has a bivariate normal distribution, since it is a linear combination of the bivariate normal distribution $\mathbf{X}$. From $\Sigma_Y$, we also see that $\text{Cov}(Y_1, Y_2)=0$, hence the variables are independent.
+
+## b)
+
+A little stuck on this
+
+
+
+
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+Det plottet er bare for å vise echo false.

@@ -1,0 +1,1 @@
+This repo contains projects and assignments from the course Linear Statistical Models. 
